@@ -84,3 +84,9 @@ for i in range(len(Time)):
         print("baby")
     else:
         print("None of the options were called:(")
+
+def flee(self):
+    damage_taken = rand.randrange(2)
+    self.hp -= damage_taken
+    gold_lost = rand.randrange(10)
+    self.gold_inventory -= gold_lost
