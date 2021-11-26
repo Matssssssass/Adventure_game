@@ -45,6 +45,12 @@ class Character():
         print(f"Your name is:{self.name}")
         print(f"Your hp is:{self.hp}")
         print(f"Your strength is:{self.strength}")
+        
+    def flee(self):
+    damage_taken = rand.randrange(2)
+    self.hp -= damage_taken
+    gold_lost = rand.randrange(10)
+    self.gold_inventory -= gold_lost
 
 Time = [20, 21, 22, 23, 00, 1, 2, 3, 4, 5,]
 
@@ -84,9 +90,3 @@ for i in range(len(Time)):
         print("baby")
     else:
         print("None of the options were called:(")
-
-def flee(self):
-    damage_taken = rand.randrange(2)
-    self.hp -= damage_taken
-    gold_lost = rand.randrange(10)
-    self.gold_inventory -= gold_lost
