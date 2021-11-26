@@ -47,10 +47,10 @@ class Character():
         print(f"Your strength is:{self.strength}")
         
     def flee(self):
-    damage_taken = rand.randrange(2)
-    self.hp -= damage_taken
-    gold_lost = rand.randrange(10)
-    self.gold_inventory -= gold_lost
+        damage_taken = rand.randrange(2)
+        self.hp -= damage_taken
+        gold_lost = rand.randrange(10)
+        self.gold_inventory -= gold_lost
 
 Time = [20, 21, 22, 23, 00, 1, 2, 3, 4, 5,]
 
