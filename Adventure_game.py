@@ -2,7 +2,7 @@ from os import system
 import random as rand
 
 class Character():
-    def __init__(self, name, hp, strength, gold_inventory, item_inventory, item_list):
+    def __init__(self, name, hp, strength, gold_inventory, item_inventory, item_list, diamond_inventory):
         self.name = name
         self.hp = hp
         self.strength = strength
@@ -10,6 +10,7 @@ class Character():
         self.item_list = item_list
         self.item_list = []
         self.item_inventory = item_inventory
+        self.diamond_inventory = diamond_inventory
 
     def set_name(self, new_name):
         self.name = new_name
@@ -53,7 +54,7 @@ class Character():
             damage_taken = rand.randrange(0,2)
             self.hp -= damage_taken
             print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
-            player_wants_to_attack = input("\nDo you want to fight or fleed?")
+            player_wants_to_attack = input("\nDo you want to continue attacking? [y] or [n]\n:")
             player_wants_to_attack = player_wants_to_attack.lower()
             if player_wants_to_attack == "y":
                 None
@@ -67,6 +68,18 @@ class Character():
         self.hp -= damage_taken
         gold_lost = rand.randrange(10)
         self.gold_inventory -= gold_lost
+    
+    def treasure(self):
+        chance = rand.randrange(100)
+        if chance <= 49:
+            gold_found = rand.randint(10,50)
+            self.gold_inventory += gold_found
+            print(f"You found {gold_found} gold")
+        elif chance <= 74:
+            self.add_items()
+        elif chance <= 79:
+            self.siamond_inventory += 1
+            print("You found a diamond")
 
 Time = [20, 21, 22, 23, 00, 1, 2, 3, 4, 5,]
 
