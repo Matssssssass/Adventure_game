@@ -20,9 +20,6 @@ class Character():
     def set_strength(self, new_strength):
         self.strength = new_strength
 
-    def get_abilities(self):
-        print(f"your name is:{self.name}\nYour hp is:{self.hp}\nYour stregnth is:{self.strength}")
-
     def add_gold(self, gold):
         self.gold_inventory += gold
 
@@ -46,6 +43,25 @@ class Character():
         print(f"Your hp is:{self.hp}")
         print(f"Your strength is:{self.strength}")
         
+    def monster(self):
+        monster_hp = rand.randrange(1,5) 
+        player_attacking = True
+        while player_attacking == True:
+            attack = rand.randrange(self.strength)
+            monster_hp -= attack
+            print(f"\nYou hit the monster with {attack} damage!")
+            damage_taken = rand.randrange(0,2)
+            self.hp -= damage_taken
+            print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
+            player_wants_to_attack = input("\nDo you want to fight or fleed?")
+            player_wants_to_attack = player_wants_to_attack.lower()
+            if player_wants_to_attack == "y":
+                None
+            elif player_wants_to_attack == "n":
+                player_attacking = False
+            else:
+                print("no acceptable input was called!\nthe fight will go on") 
+
     def flee(self):
         damage_taken = rand.randrange(2)
         self.hp -= damage_taken
