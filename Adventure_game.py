@@ -51,6 +51,12 @@ class Character():
             attack = rand.randrange(self.strength)
             monster_hp -= attack
             print(f"\nYou hit the monster with {attack} damage!")
+            if monster_hp < 1:
+                gold_found = rand.randint(10,50)
+                self.gold_inventory += gold_found
+                print(f"The monster is dead! The corpse contained {gold_found} gold!")
+                player_attacking = False
+            print(f"The monsters hp is now {monster_hp}")
             damage_taken = rand.randrange(0,2)
             self.hp -= damage_taken
             print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -114,7 +120,7 @@ for i in range(len(Time)):
     elif round_choice == "s":
         print("KFC")
     elif round_choice == "a":
-        print("fuck")
+        ready_player_one.show_items
     elif round_choice == "i":
         print("baby")
     else:
