@@ -1,7 +1,11 @@
+#importerar allt vi behöver
+
 from os import system
 import random as rand
 import sys
 from time import sleep
+
+#skapar en klass med alla funktioner som kommer påverka spelaren på något sätt 
 
 class Character():
     def __init__(self, name, hp, strength, gold_inventory, item_inventory, item_list, diamond_inventory):
