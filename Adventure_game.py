@@ -3,8 +3,6 @@ import random as rand
 import sys
 from time import sleep
 
-from testing import fin_utprint
-
 class Character():
     def __init__(self, name, hp, strength, gold_inventory, item_inventory, item_list, diamond_inventory):
         self.name = name
@@ -18,7 +16,7 @@ class Character():
 
     # Ändrar hastigheten som texten skrivs.
 
-    def fin_utprint(string):
+    def fin_utprint(self, string):
         edited_string = string
         edited_string = str(edited_string)
         for char in edited_string:
@@ -91,47 +89,31 @@ class Character():
             print("You found nothing")
 
     def add_direction(self):
-        self.movement_list = []
-        random_direction = rand.randrange(0,4)
-        if random_direction < 1:
-            self.movement_list.append("Forward (w)")
-            self.movement_list.append("left (a)")
-        elif random_direction < 2:
-            self.movement_list.append("left (a)")
-            self.movement_list.append("right (d)")
-        elif random_direction < 3:
-            self.movement_list.append("right (d)")
-            self.movement_list.append("forward (w)")
-            
-        else:
-            self.movement_list.append("left (a)")
-            self.movement_list.append("right (d)")
-            self.movement_list.append("forward (w)")
-
-        for number in self.movement_list:
-            number = self.movement_list.index(number)
-            name = self.movement_list[number]
-            name = str(name)
-            print(f"{name}")
-            
-        # Input bestämmer vilken dörr spelaren går igenom.
-
         while True:
-            Direction = input(":")
-            if Direction == "w":
-                print("You went through the door in front of you silly bitch!")
-                self.discovery()
+            doorchoice = input('''
+You have three doors in front of you which do you choose?
+
+Left    (l)
+Right   (r)
+Forward (f)
+    
+:''')
+            doorchoice = doorchoice.lower()
+
+            if doorchoice == "r":
+                print("You went through the right door")
                 break
-            elif Direction == "a":
-                print("You went through the left door, but why?")
-                self.discovery()
+            elif doorchoice == "l":
+                print("Your went through the left door")
                 break
-            elif Direction == "d":
-                print("You went through the right door, that's right")
-                self.discovery()
+            elif doorchoice == "f":
+                print("You went through the front door")
                 break
-            else: 
-                print("Wrong input")            
+            else:
+                print("wrong input")
+                input("\npress enter to continue:")
+                
+          
 
     # Funktion för att fly från monster
 
@@ -205,6 +187,7 @@ class Character():
                 damage_taken = rand.randrange(0,2)
                 self.hp -= damage_taken
                 if self.hp < 1:
+                    input(f"The monster killed {self.name}")
                     break
                 else:
                     print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -214,6 +197,7 @@ class Character():
                 damage_taken = rand.randrange(0,4)
                 self.hp -= damage_taken
                 if self.hp < 1:
+                    input(f"The monster killed {self.name}")
                     break
                 else:
                     print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -233,7 +217,7 @@ class Character():
     def Boss_fight(self):
         
         Boss_appearence = "THE BOSS appeared..."
-        fin_utprint(Boss_appearence)
+        self.fin_utprint(Boss_appearence)
 
         #skapar variabel för anfalls loopen att köra
         player_attacking = True
@@ -271,11 +255,11 @@ class Character():
 With his last words he then lays completaly still with wide open eyes
 and gold pouring out of his pockets. 
 {self.name} counted to see how much and he found a total of {gold_found} gold coins!''')
-                fin_utprint(Boss_win_string)
+                self.fin_utprint(Boss_win_string)
                 break
 
             #visar BOSSENS nya liv
-            print(f"The monsters hp is now {BOSS_hp}")
+            print(f"THE BOSS hp is now {BOSS_hp}")
             
             #BOSSENS slumpvisa anfall mellan 2-4 ifall spelare har en sköld
             if "shield" in self.item_list:
@@ -291,7 +275,7 @@ of gold pouring around him!
 
 "WAKANDA FOREVAAAAAH!"
                     '''
-                    fin_utprint(Death_string)
+                    self.fin_utprint(Death_string)
                     break
                 else:
                     print(f"\nTHE BOSS then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -310,7 +294,7 @@ of gold pouring around him!
 
 "WAKANDA FOREVAAAAAH!"
                     '''
-                    fin_utprint(Death_string)
+                    self.fin_utprint(Death_string)
                     break
                 else:
                     print(f"\nTHE BOSS then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -326,14 +310,15 @@ Before the great BOSS feet as he accepts his terrible defeat. THE BOSS gives the
 mercy and let's him go with one condition
 
 THE BOSS takes half of all the gold {self.name} had earned during his quest'''
-                fin_utprint(Boss_surrender_string)
+                self.fin_utprint(Boss_surrender_string)
                 self.gold_inventory /= 2
                 break
             else:
                 print("no acceptable input was called!\nthe fight will go on") 
                 input("press enter to continue")
 
-        # Slumpar fram om spelaren ska hitta guld, diamanter eller special item.
+
+    # Slumpar fram om spelaren ska hitta guld, diamanter eller special item.
 
     def treasure(self):
         chance = rand.randrange(100)
@@ -343,16 +328,17 @@ THE BOSS takes half of all the gold {self.name} had earned during his quest'''
             print(f"You found {gold_found} gold")
         elif chance <= 74:
             self.add_item()
-        elif chance <= 79:
+        else:
             self.diamond_inventory += 1
             print("You found a diamond")
 
-        # Skada tagen från fälla
+    
+    # Skada tagen från fälla
 
     def trap(self):
         damage_taken = rand.randrange(0,2)
         self.hp -= damage_taken
-        print(f"\nYou fell into a trap and took {damage_taken} damage. Your new hp is {self.hp} ")
+        print(f"You fell into a trap and took {damage_taken} damage. Your new hp is {self.hp} ")
 
         
     # Rensar skärmen.
@@ -369,16 +355,101 @@ def main_menu():
     print("look at your abilities?[a]")
     print("look in your inventory?[i]")
 
+#Random object som används i sök funktion och gå funktion
+
+def random_object():
+    random_obstacle = rand.randrange(4)
+    if random_obstacle == 0:
+        ready_player_one.trap()
+    elif random_obstacle == 1:
+        ready_player_one.treasure()
+    elif random_obstacle == 2:
+        ready_player_one.monster()
+    else:
+        print("You found nothing")
+
 #Spelets start och huvudprogrammets början
 
 clear_screen()
 print("welcome to the adventure!")
 
-# Spelarens namn, hp och strength bestämms med input
+# Spelarens namn och svårighetsgrad bestäms
 
 player_name = input("What is your name:")
-player_hp = int(input("What is your hitpoints:"))
-player_strength = int(input("What is your strength:"))
+
+while True:
+    difficulty = input('''
+What difficulty do you want to play the game with?
+
+Easy (e)
+Medium (m)
+Hard (h)
+GOD MODE (g)
+ASIA (a)
+
+:''')
+    if difficulty == "e":
+        player_hp = 10
+        player_strength = 10
+        input(f'''
+You chose EASY
+
+Your hp is:         {player_hp}
+Your strength is:   {player_strength}
+
+press enter to continue
+''')
+        break
+    elif difficulty == "m":
+        player_hp = 8
+        player_strength = 8
+        input(f'''
+You chose Medium
+
+Your hp is:         {player_hp}
+Your strength is:   {player_strength}
+
+press enter to continue
+''')
+        break
+    elif difficulty == "h":
+        player_hp = 5
+        player_strength = 5
+        input(f'''
+You chose Hard
+
+Your hp is:         {player_hp}
+Your strength is:   {player_strength}
+
+press enter to continue
+''')
+        break
+    elif difficulty == "g":
+        player_hp = 3
+        player_strength = 3
+        input(f'''
+You chose GOD MODE
+
+Your hp is:         {player_hp}
+Your strength is:   {player_strength}
+
+press enter to continue
+''')
+        break
+    elif difficulty == "a":
+        player_hp = 1
+        player_strength = 1
+        input(f'''
+You chose ASIA
+
+Your hp is:         {player_hp}
+Your strength is:   {player_strength}
+
+press enter to continue
+''')
+        break
+    else:
+        input("Wrong input!\n\npress enter to continue")
 
 #Klassen för spelaren skapas
 
@@ -417,19 +488,12 @@ while i < 10:
     
     if round_choice == "w":
         ready_player_one.add_direction()
+        random_object()
         i += 1
         input("If you are done press enter: ")
         
     elif round_choice == "s":
-        random_obstacle = rand.randrange(4)
-        if random_obstacle == 0:
-            ready_player_one.trap()
-        elif random_obstacle == 1:
-            ready_player_one.treasure()
-        elif random_obstacle == 2:
-            ready_player_one.monster()
-        else:
-            print("You found nothing")
+        random_object()
         input("If you are done press enter:")
         i += 1
 
@@ -444,32 +508,31 @@ while i < 10:
     else:
         print("None of the options were called:(")
 
+    if ready_player_one.hp < 1:
+        break
     #Om spelarens hp är 0 så ska spelaren vara död och därmed förlorar
 
-    if ready_player_one.hp < 1:
-        clear_screen()
-        print("GAME OVER")
-        break
+if ready_player_one.hp < 1:
+    clear_screen()
+    print("GAME OVER")
+    
 
 #Om spelaren överlever alla rundor så ska vinnande avslutet printas
 
-if i >= 10:
+if ready_player_one >= 1:
     clear_screen()
 
     Winning_text = (f'''
-    You won!!
-    Your score was {ready_player_one.gold_inventory}
-    ''')
-    fin_utprint(Winning_text)
+You won!!
+Your score was: {ready_player_one.gold_inventory}''')
+    ready_player_one.fin_utprint(Winning_text)
 
     input("\nPress enter to continue")
 
     end_credits = '''
-    Designed / Developed by: Åstrand productions
+Designed / Developed by: Åstrand productions
 
-    Coworked with: Bergling Motors
+Coworked with: Bergling Motors
 
-    published by: Jarpner Airlines 
-    
-    '''
-    fin_utprint(end_credits)
+published by: Jarpner Airlines'''
+    ready_player_one.fin_utprint(end_credits)
