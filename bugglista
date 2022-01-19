@@ -1,4 +1,1 @@
 def show items()            Går endast att se det sista föremålet
-special items               Går inte att använda eller visa i abilities 
-                            tex "strength: 5 + 1 (sword)"
-directions                  du kan välja vilket håll som helst trots att de inte ska gå

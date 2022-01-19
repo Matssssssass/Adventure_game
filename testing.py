@@ -1,22 +1,22 @@
-import sys
-from time import sleep
+def directions():
+    while True:
+        doorchoice = input('''
+You have three doors in front of you type which one you choose!
 
+Right (r)
+Left (l)
+forward (f)
+    
+:''')
+        doorchoice = doorchoice.lower()
 
-def fin_utprint(sträng):
-    string = sträng
-    string = str(string)
-    for char in string:
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        sleep(.03)
-    sleep(1)
+        if doorchoice == "r":
+            print("You went through the right door")
+        elif doorchoice == "l":
+            print("Your went through the left door")
+        elif doorchoice == "f":
+            print("You wnet through the front door")
 
-min_sträng = '''
-Hej CHONK CHARLES FATNESS
-
-suck my dick
-
-'''
-fin_utprint(min_sträng)
+    
 
         
