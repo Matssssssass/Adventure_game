@@ -8,14 +8,13 @@ from time import sleep
 #skapar en klass med alla funktioner som kommer påverka spelaren på något sätt 
 
 class Character():
-    def __init__(self, name, hp, strength, gold_inventory, item_inventory, item_list, diamond_inventory):
+    def __init__(self, name, hp, strength, gold_inventory, item_tuple, diamond_inventory):
         self.name = name
         self.hp = hp
         self.strength = strength
         self.gold_inventory = gold_inventory
-        self.item_list = item_list
-        self.item_list = []
-        self.item_inventory = item_inventory
+        self.item_tuple = item_tuple
+        self.item_tuple = []
         self.diamond_inventory = diamond_inventory
 
     # Ändrar hastigheten som texten skrivs.
@@ -38,56 +37,56 @@ class Character():
 
     def add_item(self):
         random_item = rand.randrange(100)
-        if random_item <= 49:
-            self.item_list.append("Sword")
+        if random_item <= 48:
+            self.item_tuple.append("Sword")
             print("You found a SWORD!")
-        elif random_item <= 98:
-            self.item_list.append("Shield")
+        elif random_item <= 97:
+            self.item_tuple.append("Shield")
             print("You found a SHIELD!")
-        elif random_item == 99:
-            self.item_list.append("Sacrificial Child")
+        elif random_item == 98:
+            self.item_tuple.append("Sacrificial Child")
             print("You found the magical item called Sacrificial CHILD!")
         else:
-            self.item_list.append("John Cena")
-            print("You found the holy remains of JOHN CENA!")
+            self.item_tuple.append("John Cena")
+            print("You found the holy remains of JOHN CENA'S selfbiography!")
 
     # Funktionen visar items som finns i spelarens inventory
     
     def show_items(self):
-        for i in range(len(self.item_list)):
-            self.item_inventory = (self.item_list[i])
-        print(f"amount of gold:{self.gold_inventory}")
-        print(f"amount of diamonds:{self.diamond_inventory}")
-        print(f"Your special items are:{self.item_inventory}")
+        print(f"amount of gold: {self.gold_inventory}")
+        print(f"amount of diamonds: {self.diamond_inventory}")
+        constant_string = ("Your special items are: ")
+        item_string = ', '.join(str(x) for x in self.item_tuple)
+        print(constant_string + item_string)
 
     #Funktion för att visa spelarens egenskaper
 
     def show_abilities(self):
-        print(f"Your name is:{self.name}")
+        print(f"Your name is: {self.name}")
         
         # Funktionen undersöker om Shield finns i item_list och ändrar därefter spelarens egenskaper
 
-        if "Shield" in self.item_list:
-            print(f"Your hp is:{self.hp} + (2)")
+        if "Shield" in self.item_tuple:
+            print(f"Your hp is: {self.hp} + (2)")
         else:
             print(f"your hp is {self.hp}")
 
         # Funktionen undersöker om Sword finns i item_list och ändrar därefter spelarens egenskaper
         
-        if "Sword" in self.item_list:
-            print(f"Your strength is:{self.strength} + (2)")
+        if "Sword" in self.item_tuple:
+            print(f"Your strength is: {self.strength} + (2)")
         else:
             print(f"your strength is {self.strength}")
 
     # Funktionen slumpar fram om spelaren ska hitta en fälla, skatt, monster eller ingenting
 
     def discovery(self):
-        random_obstacle = rand.randrange(4)
-        if random_obstacle == 0:
+        random_obstacle = rand.randrange(10)
+        if random_obstacle <= 2:
             self.trap()
-        elif random_obstacle == 1:
+        elif random_obstacle <= 5:
             self.treasure()
-        elif random_obstacle == 2:
+        elif random_obstacle <= 8:
             self.monster()
         else:
             print("You found nothing")
@@ -122,19 +121,25 @@ Forward (f)
     # Funktion för att fly från monster
 
     def flee(self):
-        damage_taken = rand.randrange(2)
-        self.hp -= damage_taken
-        print(f"\nMonster hit you with {damage_taken}, Your new hp is {self.hp}")
+        if "John Cena" in self.item_tuple:
+            John_cena_string = ("""
+Thankfully you had studied the JOHN CENA'S self biography and learned the power of invisibility""")
+            self.fin_utprint(John_cena_string)
+
+        else:
+            damage_taken = rand.randrange(2)
+            self.hp -= damage_taken
+            print(f"\nMonster hit you with {damage_taken}, Your new hp is {self.hp}")
 
         # Slumpar fram skada som spelaren tar när han flyr.
 
-        gold_lost = rand.randint(10,30)
-        if gold_lost > self.gold_inventory:
-            self.gold_inventory = 0
-            print(f"While running away from the monster you had no gold left!")
-        else:
-            self.gold_inventory -= gold_lost
-            print(f"While running away you lost {gold_lost} gold!")
+            gold_lost = rand.randint(10,30)
+            if gold_lost > self.gold_inventory:
+                self.gold_inventory = 0
+                print(f"While running away from the monster you had no gold left!")
+            else:
+                self.gold_inventory -= gold_lost
+                print(f"While running away you lost {gold_lost} gold!")
 
     def monster(self):
         
@@ -142,7 +147,7 @@ Forward (f)
         
         #skapar variabel för anfalls loopen att köra
         player_attacking = True
-        
+        flee_break = False
         #input loop för spelarens val antingen att slåss eller fly
         while True:
             fight_decision = input("What do you want to do? flee[f] attack[a] \n:")
@@ -165,7 +170,7 @@ Forward (f)
             #spelare anfaller med slumpvis styrka mellan 0 - self.strength
 
             #Om spelaren har ett svärd så ska styrkan på den adderas 
-            if "sword" in self.item_list:
+            if "sword" in self.item_tuple:
                 random_attack = rand.randrange(self.strength)
                 attack = random_attack + 2
                 monster_hp -= attack
@@ -187,11 +192,11 @@ Forward (f)
             print(f"The monsters hp is now {monster_hp}")
             
             #Monstrets slumpvisa anfall mellan 0-2 ifall spelare har en sköld
-            if "shield" in self.item_list:
+            if "shield" in self.item_tuple:
                 damage_taken = rand.randrange(0,2)
                 self.hp -= damage_taken
                 if self.hp < 1:
-                    input(f"The monster killed {self.name}")
+                    print(f"The monster killed {self.name}")
                     break
                 else:
                     print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
@@ -201,22 +206,29 @@ Forward (f)
                 damage_taken = rand.randrange(0,4)
                 self.hp -= damage_taken
                 if self.hp < 1:
-                    input(f"The monster killed {self.name}")
+                    print(f"The monster killed {self.name}")
                     break
                 else:
                     print(f"\nThe monster then hit you with {damage_taken}! \nYour new hp is {self.hp}")
             
-            player_wants_to_attack = input("\nDo you want to continue attacking? [y] or [n]\n:")
-            player_wants_to_attack = player_wants_to_attack.lower()
-            if player_wants_to_attack == "y":
-                None
-            elif player_wants_to_attack == "n":
-                self.flee()
+            #Spelaren frågas ifall den vill fortsätta attackera annars så flyr man
+            while True:
+                player_wants_to_attack = input("\nDo you want to continue attacking? [y] or [n]\n:")
+                player_wants_to_attack = player_wants_to_attack.lower()
+
+                if player_wants_to_attack == "y":
+                    break
+                elif player_wants_to_attack == "n":
+                    self.flee()
+                    flee_break = True
+                    break
+                else:
+                    print("no acceptable input was called!\nthe fight will go on") 
+                    input("press enter to continue")
+            if flee_break == True:
                 break
             else:
-                print("no acceptable input was called!\nthe fight will go on") 
-                input("press enter to continue")
-
+                None
 
     def Boss_fight(self):
         
@@ -225,7 +237,7 @@ Forward (f)
 
         #skapar variabel för anfalls loopen att köra
         player_attacking = True
-        
+        surrender_break = False
         #Skapar BOSSENs liv    
         BOSS_hp = rand.randrange(5,15) 
         
@@ -235,7 +247,7 @@ Forward (f)
         #spelare anfaller med slumpvis styrka mellan 0 - self.strength
 
             #Om spelaren har ett svärd så ska styrkan på den adderas 
-            if "sword" in self.item_list:
+            if "sword" in self.item_tuple:
                 random_attack = rand.randrange(self.strength)
                 attack = random_attack + 2
                 BOSS_hp -= attack
@@ -266,7 +278,7 @@ and gold pouring out of his pockets.
             print(f"THE BOSS hp is now {BOSS_hp}")
             
             #BOSSENS slumpvisa anfall mellan 2-4 ifall spelare har en sköld
-            if "shield" in self.item_list:
+            if "shield" in self.item_tuple:
                 damage_taken = rand.randrange(2,4)
                 self.hp -= damage_taken
                 if self.hp < 1:
@@ -303,23 +315,27 @@ of gold pouring around him!
                 else:
                     print(f"\nTHE BOSS then hit you with {damage_taken}! \nYour new hp is {self.hp}")
             
-            player_wants_to_attack = input("\nDo you want to continue attacking? [y] or [n]\n:")
-            player_wants_to_attack = player_wants_to_attack.lower()
-            if player_wants_to_attack == "y":
-                None
-            elif player_wants_to_attack == "n":
-                Boss_surrender_string = f'''
-The nobel warrior after hours of struggling tripped at the finnish line. {self.name} kneels
-Before the great BOSS feet as he accepts his terrible defeat. THE BOSS gives the nobel warrior
-mercy and let's him go with one condition
+            while True:
+                player_wants_to_attack = input("\nDo you want to continue attacking? [y] or [n]\n:")
+                player_wants_to_attack = player_wants_to_attack.lower()
+                if player_wants_to_attack == "y":
+                    break
+                elif player_wants_to_attack == "n":
+                    Boss_surrender_string = f'''
+After hours of struggling the nobel warrior tripped at the finnish line. {self.name} kneels
+before the great BOSS feet as he accepts his terrible defeat. THE BOSS shows the nobel warrior
+mercy and let's him go on one condition
 
 THE BOSS takes half of all the gold {self.name} had earned during his quest'''
-                self.fin_utprint(Boss_surrender_string)
-                self.gold_inventory /= 2
+                    self.fin_utprint(Boss_surrender_string)
+                    self.gold_inventory /= 2
+                    surrender_break = True
+                    break
+                else:
+                    print("no acceptable input was called!") 
+                    input("press enter to continue")
+            if surrender_break == True:
                 break
-            else:
-                print("no acceptable input was called!\nthe fight will go on") 
-                input("press enter to continue")
 
 
     # Slumpar fram om spelaren ska hitta guld, diamanter eller special item.
@@ -340,9 +356,15 @@ THE BOSS takes half of all the gold {self.name} had earned during his quest'''
     # Skada tagen från fälla
 
     def trap(self):
-        damage_taken = rand.randrange(0,2)
-        self.hp -= damage_taken
-        print(f"You fell into a trap and took {damage_taken} damage. Your new hp is {self.hp} ")
+        if "Sacrificial child" in self.item_tuple:
+            Sacrificial_child_string = ("""
+Thankfully you used the SACRIFICIAL CHILD to save yourself from falling into a trap
+            """)
+            self.fin_utprint(Sacrificial_child_string)
+        else:
+            damage_taken = rand.randrange(0,2)
+            self.hp -= damage_taken
+            print(f"You fell into a trap and took {damage_taken} damage. Your new hp is {self.hp} ")
 
         
     # Rensar skärmen.
@@ -358,19 +380,6 @@ def main_menu():
     print("search?[s]")
     print("look at your abilities?[a]")
     print("look in your inventory?[i]")
-
-#Random object som används i sök funktion och gå funktion
-
-def random_object():
-    random_obstacle = rand.randrange(4)
-    if random_obstacle == 0:
-        ready_player_one.trap()
-    elif random_obstacle == 1:
-        ready_player_one.treasure()
-    elif random_obstacle == 2:
-        ready_player_one.monster()
-    else:
-        print("You found nothing")
 
 #Spelets start och huvudprogrammets början
 
@@ -398,8 +407,8 @@ ASIA (a)
         input(f'''
 You chose EASY
 
-Your hp is:         {player_hp}
-Your strength is:   {player_strength}
+Your hp is: {player_hp}
+Your strength is: {player_strength}
 
 press enter to continue
 ''')
@@ -410,8 +419,8 @@ press enter to continue
         input(f'''
 You chose Medium
 
-Your hp is:         {player_hp}
-Your strength is:   {player_strength}
+Your hp is: {player_hp}
+Your strength is: {player_strength}
 
 press enter to continue
 ''')
@@ -422,8 +431,8 @@ press enter to continue
         input(f'''
 You chose Hard
 
-Your hp is:         {player_hp}
-Your strength is:   {player_strength}
+Your hp is: {player_hp}
+Your strength is: {player_strength}
 
 press enter to continue
 ''')
@@ -434,8 +443,8 @@ press enter to continue
         input(f'''
 You chose GOD MODE
 
-Your hp is:         {player_hp}
-Your strength is:   {player_strength}
+Your hp is: {player_hp}
+Your strength is: {player_strength}
 
 press enter to continue
 ''')
@@ -446,8 +455,8 @@ press enter to continue
         input(f'''
 You chose ASIA
 
-Your hp is:         {player_hp}
-Your strength is:   {player_strength}
+Your hp is: {player_hp}
+Your strength is: {player_strength}
 
 press enter to continue
 ''')
@@ -457,7 +466,7 @@ press enter to continue
 
 #Klassen för spelaren skapas
 
-ready_player_one = Character(player_name, player_hp, player_strength, 0, 0, 0, 0)
+ready_player_one = Character(player_name, player_hp, player_strength, 0, 0, 0)
 
 # Spelets klocka (i) skapas
 
@@ -492,12 +501,12 @@ while i < 10:
     
     if round_choice == "w":
         ready_player_one.add_direction()
-        random_object()
+        ready_player_one.discovery()
         i += 1
         input("If you are done press enter: ")
         
     elif round_choice == "s":
-        random_object()
+        ready_player_one.discovery()
         input("If you are done press enter:")
         i += 1
 
@@ -523,8 +532,11 @@ if ready_player_one.hp < 1:
 
 #Om spelaren överlever alla rundor så ska vinnande avslutet printas
 
-if ready_player_one >= 1:
+if ready_player_one.hp >= 1:
     clear_screen()
+
+    
+    ready_player_one.gold_inventory += ready_player_one.diamond_inventory * 1000
 
     Winning_text = (f'''
 You won!!

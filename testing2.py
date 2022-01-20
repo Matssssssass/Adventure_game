@@ -1,6 +1,4 @@
-list = ["mamma", "pappa", "son", "dotter"]
+import random
 
-for x in range(len(list)):
-    fixed_list = (list[x])
-    
-print(fixed_list)
+nummer = random.randrange(2)
+print(nummer)
